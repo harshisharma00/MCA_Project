@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block title %}Users | MetaGuard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">User Management</h4>
+  <small class="text-secondary">Ban repeat offenders. Bans take effect immediately.</small>
+</div>
+
+<div class="chart-card">
+  <table class="table table-dark table-sm threats-table mb-0">
+    <thead>
+      <tr>
+        <th>Joined</th>
+        <th>Avatar</th>
+        <th>Username</th>
+        <th>Role</th>
+        <th>Threats</th>
+        <th>Status</th>
+        <th class="text-end">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for u in users %}
+        <tr>
+          <td class="text-secondary small">{{ u.joined }}</td>
+          <td><span class="dot" style="background:{{ u.color }}"></span></td>
+          <td><strong>{{ u.username }}</strong></td>
+          <td>
+            {% if u.role == 'admin' %}
+              <span class="badge bg-warning text-dark">admin</span>
+            {% else %}
+              <span class="text-secondary">user</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if u.threats > 0 %}
+              <span class="threat-type-toxicity">{{ u.threats }}</span>
+            {% else %}
+              <span class="text-secondary">0</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if u.is_banned %}
+              <span class="badge bg-danger">banned</span>
+            {% else %}
+              <span class="badge bg-success">active</span>
+            {% endif %}
+          </td>
+          <td class="text-end">
+            {% if u.role != 'admin' %}
+              {% if u.is_banned %}
+                <form method="POST" action="{{ url_for('admin.unban_user', user_id=u.id) }}" class="d-inline">
+                  <button class="btn btn-sm btn-outline-success" type="submit">Unban</button>
+                </form>
+              {% else %}
+                <form method="POST" action="{{ url_for('admin.ban_user', user_id=u.id) }}" class="d-inline"
+                      onsubmit="return confirm('Ban {{ u.username }}?');">
+                  <button class="btn btn-sm btn-outline-danger" type="submit">Ban</button>
+                </form>
+              {% endif %}
+            {% else %}
+              <span class="text-secondary small">protected</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% else %}
+        <tr><td colspan="7" class="text-secondary text-center py-4">No users yet.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

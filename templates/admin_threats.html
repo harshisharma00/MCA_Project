@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Threats | MetaGuard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h4 class="mb-0">All Detected Threats</h4>
+  <div class="btn-group" role="group">
+    <a class="btn btn-sm btn-outline-info {% if not type_filter %}active{% endif %}" href="{{ url_for('admin.threats_view') }}">All</a>
+    <a class="btn btn-sm btn-outline-info {% if type_filter == 'toxicity' %}active{% endif %}" href="{{ url_for('admin.threats_view', type='toxicity') }}">Toxicity</a>
+    <a class="btn btn-sm btn-outline-info {% if type_filter == 'phishing' %}active{% endif %}" href="{{ url_for('admin.threats_view', type='phishing') }}">Phishing</a>
+  </div>
+</div>
+
+<div class="chart-card">
+  <table class="table table-dark table-sm threats-table mb-0">
+    <thead>
+      <tr>
+        <th>When</th>
+        <th>User</th>
+        <th>Type</th>
+        <th>Score</th>
+        <th>Offending payload</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for t in threats %}
+        <tr>
+          <td class="text-secondary small">{{ t.when }}</td>
+          <td><strong>{{ t.username }}</strong></td>
+          <td><span class="threat-type-{{ t.type }}">{{ t.type }}</span></td>
+          <td>{{ "%.2f"|format(t.score) }}</td>
+          <td><code class="text-light">{{ t.payload }}</code></td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="text-secondary text-center py-4">No threats match this filter.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

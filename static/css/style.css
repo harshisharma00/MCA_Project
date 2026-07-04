@@ -1,0 +1,222 @@
+/* MetaGuard — Metaverse Threat Detection AI */
+
+body {
+  font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+  min-height: 100vh;
+  background: radial-gradient(ellipse at top, #102030 0%, #050810 70%);
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 4px;
+  vertical-align: middle;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.4);
+}
+
+/* ---------- Metaverse room ---------- */
+
+.room-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+#room-canvas {
+  background:
+    linear-gradient(180deg, #0d1b2a 0%, #1b263b 100%);
+  border: 2px solid #4a5568;
+  border-radius: 8px;
+  display: block;
+  box-shadow: inset 0 0 60px rgba(0, 200, 255, 0.08);
+  cursor: crosshair;
+}
+
+.chat-panel {
+  display: flex;
+  flex-direction: column;
+  height: 500px;
+  background: #0a0f18;
+  border: 1px solid #2d3748;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.chat-header {
+  background: #111a26;
+  padding: 0.6rem 0.9rem;
+  border-bottom: 1px solid #2d3748;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+#chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem 0.8rem;
+  font-size: 0.9rem;
+}
+
+.chat-msg {
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+
+.chat-msg .name {
+  font-weight: 600;
+  margin-right: 4px;
+}
+
+.chat-input-row {
+  display: flex;
+  gap: 4px;
+  padding: 0.5rem;
+  border-top: 1px solid #2d3748;
+}
+
+#chat-input {
+  flex: 1;
+  background: #18222e;
+  border: 1px solid #2d3748;
+  color: #e2e8f0;
+  border-radius: 4px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+}
+
+#chat-input:focus {
+  outline: none;
+  border-color: #4cc9f0;
+}
+
+/* ---------- Threat toast ---------- */
+
+.toast-container {
+  position: fixed;
+  top: 70px;
+  right: 20px;
+  z-index: 1080;
+  width: 340px;
+}
+
+.threat-toast {
+  background: #481b1b;
+  border: 1px solid #c53030;
+  color: #ffe5e5;
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 8px;
+  border-radius: 6px;
+  font-size: 0.88rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+  animation: slidein 0.25s ease-out;
+}
+
+.threat-toast .label {
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  color: #ff6b6b;
+}
+
+@keyframes slidein {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+
+/* ---------- Admin dashboard ---------- */
+
+.stat-card {
+  background: linear-gradient(135deg, #111a26 0%, #182536 100%);
+  border: 1px solid #2d3748;
+  border-radius: 8px;
+  padding: 1rem 1.2rem;
+}
+
+.stat-card .label {
+  color: #94a3b8;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-card .value {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #4cc9f0;
+}
+
+.stat-card.danger .value { color: #ff6b6b; }
+.stat-card.warn   .value { color: #f4d03f; }
+.stat-card.ok     .value { color: #52be80; }
+
+.threats-table th {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #94a3b8;
+}
+
+.threat-type-toxicity {
+  background: #5b1f1f;
+  color: #ffd5d5;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.threat-type-phishing {
+  background: #4a3c14;
+  color: #fff3c4;
+  padding: 1px 8px;
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+
+.chart-card {
+  background: #0d1320;
+  border: 1px solid #2d3748;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.chart-card h6 {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.8rem;
+}
+
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #52be80;
+  margin-right: 6px;
+  vertical-align: middle;
+  box-shadow: 0 0 0 0 rgba(82, 190, 128, 0.6);
+  animation: livepulse 1.6s ease-out infinite;
+}
+
+@keyframes livepulse {
+  0%   { box-shadow: 0 0 0 0   rgba(82, 190, 128, 0.55); }
+  70%  { box-shadow: 0 0 0 10px rgba(82, 190, 128, 0);    }
+  100% { box-shadow: 0 0 0 0   rgba(82, 190, 128, 0);    }
+}
+
+.stat-card .value.flash {
+  animation: cardflash 0.6s ease-out;
+}
+
+@keyframes cardflash {
+  0%   { color: #ffffff; transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+a { color: #4cc9f0; }
+a:hover { color: #63d4f4; }

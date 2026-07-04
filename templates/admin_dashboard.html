@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard | MetaGuard{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h4 class="mb-0">Threat Detection Dashboard</h4>
+    <small class="text-secondary">
+      <span class="live-dot"></span>
+      Live — auto-refreshing every 3 seconds
+      <span id="last-updated" class="ms-2"></span>
+    </small>
+  </div>
+  <div>
+    <a class="btn btn-outline-info btn-sm" href="{{ url_for('admin.threats_view') }}">All Threats</a>
+    <a class="btn btn-outline-info btn-sm" href="{{ url_for('admin.users_view') }}">Manage Users</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-3 col-6">
+    <div class="stat-card">
+      <div class="label">Users</div>
+      <div class="value" data-stat="total_users">{{ stats.total_users }}</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="stat-card warn">
+      <div class="label">Banned</div>
+      <div class="value" data-stat="banned_users">{{ stats.banned_users }}</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="stat-card ok">
+      <div class="label">Messages today</div>
+      <div class="value" data-stat="messages_today">{{ stats.messages_today }}</div>
+    </div>
+  </div>
+  <div class="col-md-3 col-6">
+    <div class="stat-card danger">
+      <div class="label">Threats today</div>
+      <div class="value" data-stat="threats_today">{{ stats.threats_today }}</div>
+    </div>
+  </div>
+</div>
+
+<div class="row g-3 mb-3">
+  <div class="col-md-8">
+    <div class="chart-card">
+      <h6>Threats per hour (last 24h)</h6>
+      <canvas id="threats-time-chart" height="120"></canvas>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="chart-card">
+      <h6>Threat type split</h6>
+      <canvas id="threats-type-chart" height="200"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="chart-card">
+  <h6>Recent threats</h6>
+  <table class="table table-dark table-sm threats-table mb-0">
+    <thead>
+      <tr>
+        <th>When</th>
+        <th>User</th>
+        <th>Type</th>
+        <th>Score</th>
+        <th>Payload</th>
+      </tr>
+    </thead>
+    <tbody id="recent-threats-body">
+      {% for t in recent %}
+        <tr>
+          <td class="text-secondary">{{ t.when }}</td>
+          <td><strong>{{ t.username }}</strong></td>
+          <td><span class="threat-type-{{ t.type }}">{{ t.type }}</span></td>
+          <td>{{ "%.2f"|format(t.score) }}</td>
+          <td class="text-truncate" style="max-width: 420px;">{{ t.payload }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="5" class="text-secondary text-center py-4">No threats detected yet — the metaverse is calm.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/admin.js') }}"></script>
+{% endblock %}

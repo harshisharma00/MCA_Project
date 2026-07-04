@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Register | MetaGuard{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+  <div class="col-md-5">
+    <div class="card bg-black border-secondary text-light">
+      <div class="card-body p-4">
+        <h3 class="card-title mb-1">Create account</h3>
+        <p class="text-secondary small mb-4">Pick a username — your avatar color is assigned automatically.</p>
+        <form method="POST" action="{{ url_for('auth.register') }}">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" name="username" id="username" class="form-control bg-dark text-light border-secondary" autofocus required>
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password (min 6 chars)</label>
+            <input type="password" name="password" id="password" class="form-control bg-dark text-light border-secondary" minlength="6" required>
+          </div>
+          <button type="submit" class="btn btn-info w-100">Register</button>
+        </form>
+        <div class="text-center mt-3 small text-secondary">
+          Already registered? <a href="{{ url_for('auth.login') }}">Login</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
