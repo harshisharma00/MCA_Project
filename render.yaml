@@ -1,0 +1,20 @@
+# Render Blueprint for MetaGuard.
+# On the Render dashboard: New + -> Blueprint -> pick this repo. Render reads
+# this file and sets everything up. The free plan sleeps after ~15 minutes of
+# inactivity and takes 30-60 seconds to wake on the next request.
+services:
+  - type: web
+    name: metaguard
+    runtime: python
+    plan: free
+    # Install deps and train both models so the .pkl files match the exact
+    # scikit-learn version installed on the server.
+    buildCommand: "pip install -r requirements.txt && python ai/train_toxicity.py && python ai/train_phishing.py"
+    # Seed the demo accounts (admin / alice / bob), then serve with gunicorn.
+    # One worker with threads keeps the shared SQLite file happy.
+    startCommand: "python seed.py && gunicorn 'app:create_app()' --worker-class gthread --workers 1 --threads 8 --timeout 120 --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: SECRET_KEY
+        generateValue: true

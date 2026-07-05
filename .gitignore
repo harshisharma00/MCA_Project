@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+
+# Trained models are rebuilt at deploy time by the build command
+models_pkl/
+
+# Local SQLite database (recreated at runtime)
+instance/
+
+# Report build artifacts / scratch
+report/~$*.docx
+*.pdf
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
